@@ -1,5 +1,3 @@
-Below is a README file for the Number to Word Converter project, tailored for the Git repository named "NumToWordConverter." The README includes a clear description, setup instructions, usage details, and a dedicated section for images, all formatted in Markdown for GitHub compatibility.
-
 # NumToWordConverter
 
 A modern, interactive web application that converts numbers into words in both Bangla and English. Built with React, Tailwind CSS, and Font Awesome, this project features a sleek, animated interface with a gradient background, card-based layout, and smooth transitions for an engaging user experience.
