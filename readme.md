@@ -33,7 +33,7 @@ A modern, interactive web application that converts numbers into words in both B
 
 ## Live Demo
 
-<a href="https://number-to-word-converter-two.vercel.app"  target="_blank" rel="noopener noreferrer">Try the application live</a>
+<a href="https://number-to-word-converter-two.vercel.app"  target="_blank" rel="noopener noreferrer">Number to Word Converter Web Application</a>
 
 ## Installation
 
