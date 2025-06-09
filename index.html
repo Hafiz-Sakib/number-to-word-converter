@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number to Word Converter</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- React & ReactDOM from CDN -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <!-- Babel for JSX support in browser -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-6 overflow-hidden"
+  >
+    <div id="root" class="w-full max-w-lg mx-auto"></div>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      function HomePage({ onSelect }) {
+        return (
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl p-8 w-full text-center transform transition-all duration-500 hover:scale-105">
+            <h1 className="text-3xl font-extrabold mb-6 text-gray-900 tracking-tight">
+              সংখ্যা রূপান্তরক
+            </h1>
+            <p className="mb-8 text-gray-600 text-lg animate-fade-in">
+              রূপান্তরক নির্বাচন করুন
+            </p>
+
+            <button
+              onClick={() => onSelect("bangla")}
+              className="group relative bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-8 py-4 rounded-xl w-full mb-4 overflow-hidden transform transition-all duration-300 hover:from-emerald-600 hover:to-teal-700 hover:shadow-lg hover:-translate-y-1"
+            >
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+              <i className="fas fa-language mr-2"></i> বাংলা সংখ্যা → শব্দ
+            </button>
+
+            <button
+              onClick={() => onSelect("english")}
+              className="group relative bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-xl w-full overflow-hidden transform transition-all duration-300 hover:from-blue-600 hover:to-indigo-700 hover:shadow-lg hover:-translate-y-1"
+            >
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+              <i className="fas fa-globe mr-2"></i> English Number → Words
+            </button>
+          </div>
+        );
+      }
+
+      function BanglaNumberToWord({ onBack }) {
+        const [input, setInput] = useState("");
+        const [result, setResult] = useState("");
+
+        const num_to_bd = {
+          0: "শূন্য",
+          1: "এক",
+          2: "দুই",
+          3: "তিন",
+          4: "চার",
+          5: "পাঁচ",
+          6: "ছয়",
+          7: "সাত",
+          8: "আট",
+          9: "নয়",
+          10: "দশ",
+          11: "এগার",
+          12: "বার",
+          13: "তের",
+          14: "চৌদ্দ",
+          15: "পনের",
+          16: "ষোল",
+          17: "সতের",
+          18: "আঠার",
+          19: "ঊনিশ",
+          20: "বিশ",
+          21: "একুশ",
+          22: "বাইশ",
+          23: "তেইশ",
+          24: "চব্বিশ",
+          25: "পঁচিশ",
+          26: "ছাব্বিশ",
+          27: "সাতাশ",
+          28: "আটাশ",
+          29: "ঊনত্রিশ",
+          30: "ত্রিশ",
+          31: "একত্রিশ",
+          32: "বত্রিশ",
+          33: "তেত্রিশ",
+          34: "চৌত্রিশ",
+          35: "পঁয়ত্রিশ",
+          36: "ছত্রিশ",
+          37: "সাঁইত্রিশ",
+          38: "আটত্রিশ",
+          39: "ঊনচল্লিশ",
+          40: "চল্লিশ",
+          41: "একচল্লিশ",
+          42: "বিয়াল্লিশ",
+          43: "তেতাল্লিশ",
+          44: "চুয়াল্লিশ",
+          45: "পঁয়তাল্লিশ",
+          46: "ছেচল্লিশ",
+          47: "সাতচল্লিশ",
+          48: "আটচল্লিশ",
+          49: "ঊনপঞ্চাশ",
+          50: "পঞ্চাশ",
+          51: "একান্ন",
+          52: "বায়ান্ন",
+          53: "তিপ্পান্ন",
+          54: "চুয়ান্ন",
+          55: "পঞ্চান্ন",
+          56: "ছাপ্পান্ন",
+          57: "সাতান্ন",
+          58: "আটান্ন",
+          59: "ঊনষাট",
+          60: "ষাট",
+          61: "একষট্টি",
+          62: "বাষট্টি",
+          63: "তেষট্টি",
+          64: "চৌষট্টি",
+          65: "পঁয়ষট্টি",
+          66: "ছেষট্টি",
+          67: "সাতষট্টি",
+          68: "আটষট্টি",
+          69: "ঊনসত্তর",
+          70: "সত্তর",
+          71: "একাত্তর",
+          72: "বাহাত্তর",
+          73: "তিয়াত্তর",
+          74: "চুয়াত্তর",
+          75: "পঁচাত্তর",
+          76: "ছিয়াত্তর",
+          77: "সাতাত্তর",
+          78: "আটাত্তর",
+          79: "ঊনআশি",
+          80: "আশি",
+          81: "একাশি",
+          82: "বিরাশি",
+          83: "তিরাশি",
+          84: "চুরাশি",
+          85: "পঁচাশি",
+          86: "ছিয়াশি",
+          87: "সাতাশি",
+          88: "আটাশি",
+          89: "ঊননব্বই",
+          90: "নব্বই",
+          91: "একানব্বই",
+          92: "বিরানব্বই",
+          93: "তিরানব্বই",
+          94: "চুরানব্বই",
+          95: "পঁচানব্বই",
+          96: "ছিয়ানব্বই",
+          97: "সাতানব্বই",
+          98: "আটানব্বই",
+          99: "নিরানব্বই",
+        };
+
+        const underHundred = (num) => num_to_bd[num] || "";
+
+        const hundredWord = (num) => {
+          let word = "";
+          let quotient = Math.floor(num / 100);
+          let remainder = num % 100;
+          if (quotient > 0) word += underHundred(quotient) + " শত ";
+          if (remainder > 0) word += underHundred(remainder);
+          return word.trim();
+        };
+
+        const thousandWord = (num) => {
+          let word = "";
+          let quotient = Math.floor(num / 1000);
+          let remainder = num % 1000;
+          if (quotient > 0) word += underHundred(quotient) + " হাজার ";
+          if (remainder > 0) word += hundredWord(remainder);
+          return word.trim();
+        };
+
+        const lakhWord = (num) => {
+          let word = "";
+          let quotient = Math.floor(num / 100000);
+          let remainder = num % 100000;
+          if (quotient > 0) word += underHundred(quotient) + " লক্ষ ";
+          if (remainder > 0) word += thousandWord(remainder);
+          return word.trim();
+        };
+
+        const croreWord = (num) => {
+          let word = "";
+          let quotient = Math.floor(num / 10000000);
+          let remainder = num % 10000000;
+          if (quotient > 0) word += underHundred(quotient) + " কোটি ";
+          if (remainder > 0) word += lakhWord(remainder);
+          return word.trim();
+        };
+
+        const convert = (num) => {
+          if (num >= 10000000) return croreWord(num);
+          else if (num >= 100000) return lakhWord(num);
+          else if (num >= 1000) return thousandWord(num);
+          else if (num >= 100) return hundredWord(num);
+          else return underHundred(num);
+        };
+
+        const handleConvert = () => {
+          if (!input || isNaN(input)) {
+            setResult("অকার্যকর সংখ্যা");
+            return;
+          }
+
+          const cleanedInput = input.replace(/[^0-9.]/g, "");
+          const parts = cleanedInput.split(".");
+          const integerPart = parseInt(parts[0]);
+          const decimalPart = parts.length > 1 ? parseInt(parts[1][0]) : 0;
+
+          const integerWords = convert(integerPart);
+          const decimalWords =
+            decimalPart > 0 ? ` দশমিক ${num_to_bd[decimalPart]}` : "";
+
+          setResult(`${integerWords}${decimalWords}`);
+        };
+
+        const copyToClipboard = () => {
+          navigator.clipboard.writeText(result).then(() => {
+            alert("ফলাফল কপি করা হয়েছে!");
+          });
+        };
+
+        return (
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl p-8 w-full transform transition-all duration-500 hover:scale-105">
+            <button
+              onClick={onBack}
+              className="group flex items-center text-indigo-600 hover:text-indigo-800 mb-6 transition-colors duration-300"
+            >
+              <i className="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform"></i>
+              পিছনে যান
+            </button>
+            <h1 className="text-3xl font-extrabold mb-6 text-center text-gray-900 tracking-tight">
+              বাংলা সংখ্যা থেকে শব্দ
+            </h1>
+
+            {/* Input Field */}
+            <div className="relative mb-6">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="সংখ্যা লিখুন (যেমন: 123.5)"
+                className="w-full p-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300"
+              />
+              <i className="fas fa-calculator absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              {input && (
+                <button
+                  onClick={() => setInput("")}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <i className="fas fa-times"></i>
+                </button>
+              )}
+            </div>
+
+            <button
+              onClick={handleConvert}
+              className="group relative bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-6 py-3 rounded-xl w-full mb-6 overflow-hidden transform transition-all duration-300 hover:from-indigo-600 hover:to-blue-700 hover:shadow-lg hover:-translate-y-1"
+            >
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+              <i className="fas fa-sync-alt mr-2"></i> রূপান্তর করুন
+            </button>
+
+            {result && (
+              <div className="mt-6 p-6 bg-gray-50 rounded-xl relative border border-gray-200 animate-fade-in">
+                <p className="text-gray-800 text-lg font-medium">{result}</p>
+                <button
+                  onClick={copyToClipboard}
+                  className="absolute top-3 right-3 text-indigo-500 hover:text-indigo-700 transition-colors"
+                >
+                  <i className="fas fa-copy"></i>
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      function EnglishNumberToWord({ onBack }) {
+        const [input, setInput] = useState("");
+        const [result, setResult] = useState("");
+
+        const one = [
+          "",
+          "one ",
+          "two ",
+          "three ",
+          "four ",
+          "five ",
+          "six ",
+          "seven ",
+          "eight ",
+          "nine ",
+          "ten ",
+          "eleven ",
+          "twelve ",
+          "thirteen ",
+          "fourteen ",
+          "fifteen ",
+          "sixteen ",
+          "seventeen ",
+          "eighteen ",
+          "nineteen ",
+        ];
+
+        const ten = [
+          "",
+          "",
+          "twenty ",
+          "thirty ",
+          "forty ",
+          "fifty ",
+          "sixty ",
+          "seventy ",
+          "eighty ",
+          "ninety ",
+        ];
+
+        const numToWords = (n, s) => {
+          let str = "";
+          if (n > 19) str += ten[Math.floor(n / 10)] + one[n % 10];
+          else str += one[n];
+          if (n) str += s;
+          return str;
+        };
+
+        const convertToWords = (n) => {
+          if (n === 0) return "zero";
+          let out = "";
+          out += numToWords(Math.floor(n / 10000000), "crore ");
+          out += numToWords(Math.floor((n / 100000) % 100), "lakh ");
+          out += numToWords(Math.floor((n / 1000) % 100), "thousand ");
+          out += numToWords(Math.floor((n / 100) % 10), "hundred ");
+          if (n > 100 && n % 100) out += "and ";
+          out += numToWords(n % 100, "");
+          return out.trim();
+        };
+
+        const handleConvert = () => {
+          if (!input || isNaN(input)) {
+            setResult("Invalid number");
+            return;
+          }
+          const num = parseInt(input);
+          setResult(convertToWords(num));
+        };
+
+        const copyToClipboard = () => {
+          navigator.clipboard.writeText(result).then(() => {
+            alert("Result copied!");
+          });
+        };
+
+        return (
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl p-8 w-full transform transition-all duration-500 hover:scale-105">
+            <button
+              onClick={onBack}
+              className="group flex items-center text-indigo-600 hover:text-indigo-800 mb-6 transition-colors duration-300"
+            >
+              <i className="fas fa-arrow-left mr-2 transform group-hover:-translate-x-1 transition-transform"></i>
+              Go Back
+            </button>
+            <h1 className="text-3xl font-extrabold mb-6 text-center text-gray-900 tracking-tight">
+              English Number to Words
+            </h1>
+
+            <div className="relative mb-6">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Enter a number (e.g., 12345)"
+                className="w-full p-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300"
+              />
+              <i className="fas fa-calculator absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+              {input && (
+                <button
+                  onClick={() => setInput("")}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <i className="fas fa-times"></i>
+                </button>
+              )}
+            </div>
+
+            <button
+              onClick={handleConvert}
+              className="group relative bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl w-full mb-6 overflow-hidden transform transition-all duration-300 hover:from-purple-600 hover:to-pink-700 hover:shadow-lg hover:-translate-y-1"
+            >
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+              <i className="fas fa-sync-alt mr-2"></i> Convert
+            </button>
+
+            {result && (
+              <div className="mt-6 p-6 bg-gray-50 rounded-xl relative border border-gray-200 animate-fade-in">
+                <p className="text-gray-800 text-lg font-medium">{result}</p>
+                <button
+                  onClick={copyToClipboard}
+                  className="absolute top-3 right-3 text-indigo-500 hover:text-indigo-700 transition-colors"
+                >
+                  <i className="fas fa-copy"></i>
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      function App() {
+        const [view, setView] = useState("home");
+
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-6">
+            <div id="root" className="w-full max-w-lg mx-auto">
+              {view === "home" && <HomePage onSelect={setView} />}
+              {view === "bangla" && (
+                <BanglaNumberToWord onBack={() => setView("home")} />
+              )}
+              {view === "english" && (
+                <EnglishNumberToWord onBack={() => setView("home")} />
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(React.createElement(App));
+    </script>
+
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+    </style>
+  </body>
+</html>
