@@ -74,8 +74,6 @@ Add screenshots of the application below to showcase the interface. Replace the 
 - **English Converter**  
   ![English Converter](./english.png)
 
-> **Note**: To add screenshots, capture images of the application and place them in a `screenshots/` folder in the repository. Update the image paths above accordingly.
-
 ## Contributing
 
 Contributions are welcome! To contribute:
